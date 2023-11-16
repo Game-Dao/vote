@@ -1,5 +1,5 @@
-import { Button } from '@/components/ui/button'
 import React from 'react'
+import ConnectButton from './components/ConnectButton'
 
 function Header() {
   return (
@@ -23,9 +23,7 @@ function Header() {
           </svg>
           <h1 className="ml-2 text-2xl font-semibold text-[#bd1e59] dark:text-white">DAO Voting</h1>
         </div>
-        <Button className="text-[#bd1e59] dark:text-white border-[#bd1e59] dark:border-white" variant="ghost">
-          Connect Wallet
-        </Button>
+        <ConnectButton />
       </header>
   )
 }

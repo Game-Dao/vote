@@ -19,6 +19,7 @@ specifiers:
   tailwindcss: ^3.3.0
   tailwindcss-animate: ^1.0.7
   typescript: ^5
+  wd-game-login: ^0.0.28
 
 dependencies:
   '@radix-ui/react-slot': 1.0.2_u5zja476buyywzbvglb2fbhaii
@@ -30,6 +31,7 @@ dependencies:
   react-dom: 18.2.0_react@18.2.0
   tailwind-merge: 2.0.0
   tailwindcss-animate: 1.0.7_tailwindcss@3.3.5
+  wd-game-login: 0.0.28
 
 devDependencies:
   '@types/node': 20.9.0
@@ -682,6 +684,10 @@ packages:
       shebang-command: 2.0.0
       which: 2.0.2
     dev: true
+
+  /crypto-js/4.2.0:
+    resolution: {integrity: sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==}
+    dev: false
 
   /cssesc/3.0.0:
     resolution: {integrity: sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg==}
@@ -2524,6 +2530,12 @@ packages:
     dependencies:
       glob-to-regexp: 0.4.1
       graceful-fs: 4.2.11
+    dev: false
+
+  /wd-game-login/0.0.28:
+    resolution: {integrity: sha512-z624mj1B39r/mqqc8OqWQop9zUuVLfmD/9JPjLs+x22p9jR/PFBaToVsFKWDzNb94xSk9vK4bgoNIQv34Axl0Q==}
+    dependencies:
+      crypto-js: 4.2.0
     dev: false
 
   /which-boxed-primitive/1.0.2:
