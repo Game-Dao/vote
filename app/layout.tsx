@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} min-h-[100vh] flex flex-col`}>
         <Provider>
-          {/* <Header /> */}
+          <Header />
           <main className='flex-1 lg:px-6 py-12 space-y-8'>
             {children}
           </main>
