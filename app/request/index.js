@@ -1,6 +1,8 @@
 import { createRequest } from "india-hd-utils";
 import { toast } from "react-toastify";
 
+
+console.log(111,process.env.NEXT_PUBLIC_SERVICE_URL,process.env.NEXT_PUBLIC_PUBLIC_KEY)
 const request = createRequest({
   baseURL: process.env.NEXT_PUBLIC_SERVICE_URL,
   tokenName: 'token',
