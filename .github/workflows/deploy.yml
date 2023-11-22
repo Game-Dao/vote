@@ -1,0 +1,23 @@
+name: Deploy Next.js to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # 或你用于部署的分支
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '12'
+    - run: npm install
+    - run: npm run build
+    - run: |
+        git config --global user.name 'andy00614'
+        git config --global user.email '33732843@qq.com'
+        git add -f out
+        git commit -m 'Deploy Next.js app'
+        git subtree push --prefix out origin gh-pages  # 部署到 gh-pages 分支
