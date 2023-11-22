@@ -7,7 +7,7 @@ import { Toaster } from 'react-hot-toast'
 
 function Provider({ children }: { children: React.ReactNode }) {
   return (
-    <AccountProvider getWallet={getWallet} onLogout={() => localStorage.clear()}>
+    // <AccountProvider getWallet={getWallet} onLogout={() => localStorage.clear()}>
       <>
         {children}
         <Toaster
@@ -15,7 +15,7 @@ function Provider({ children }: { children: React.ReactNode }) {
           reverseOrder={false}
         />
       </>
-    </AccountProvider>
+    // </AccountProvider>
   )
 }
 
