@@ -3,6 +3,8 @@ import React from 'react'
 import { AccountProvider } from 'india-hd-utils'
 import { getWallet } from './request'
 import { Toaster } from 'react-hot-toast'
+import { Toaster as ShadcnToaster } from "@/components/ui/toaster"
+
 
 
 function Provider({ children }: { children: React.ReactNode }) {
@@ -14,6 +16,7 @@ function Provider({ children }: { children: React.ReactNode }) {
           position="top-center"
           reverseOrder={false}
         />
+        <ShadcnToaster />
       </>
     </AccountProvider>
   )
