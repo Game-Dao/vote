@@ -25,6 +25,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { createProposal } from '../request';
 import { IntendType } from './const';
+import useSWR from 'swr';
 
 // Define the schema using Zod
 const FormSchema = z.object({
@@ -44,8 +45,9 @@ const CreateVote = ({className}: {className?: string}) => {
     resolver: zodResolver(FormSchema),
   });
 
+  // const {data,} = useSWR('createProposal', () => createProposal('1'),);
+
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    console.log(data)
     await createProposal(data)
     form.reset();
     toast({
