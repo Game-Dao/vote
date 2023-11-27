@@ -5,11 +5,12 @@ import { ProposalType, getProposal } from '../request'
 import ProposalItem from './ProposalItem'
 import { reverseIntendType, status2Label } from './const'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { useSWRWithToken } from '@/lib/useSWRWithToken'
 
 const defaultTabSelection: ProposalType = '1'
 function Proposals() {
   const [currentTab, setCurrentTab] = useState<ProposalType>(defaultTabSelection); // State to track current tab
-  const { data: proposals } = useSWR(['proposal', currentTab], () => getProposal(currentTab));
+  const { data: proposals } = useSWRWithToken(['proposal', currentTab], () => getProposal(currentTab), {refreshInterval: 2000});
 
   return (
     <div className='space-y-4'>

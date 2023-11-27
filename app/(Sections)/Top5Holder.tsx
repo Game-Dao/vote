@@ -5,7 +5,6 @@
 import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar"
 
 export default function Top5Holder({data}: {data:{count: number,address: string}[]}) {
-  console.log(data)
   return (
     <section className="w-full">
       <h2 className="text-2xl font-bold">Top 5 NFT Holders</h2>

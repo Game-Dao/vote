@@ -9,7 +9,12 @@ import { Toaster as ShadcnToaster } from "@/components/ui/toaster"
 
 function Provider({ children }: { children: React.ReactNode }) {
   return (
-    <AccountProvider getWallet={getWallet} onLogout={() => localStorage.clear()}>
+    <AccountProvider
+      getWallet={getWallet}
+      onLogout={() => {
+        localStorage.clear()
+      }}
+    >
       <>
         {children}
         <Toaster
