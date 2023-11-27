@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { Loader2 } from "lucide-react"
 import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -20,12 +21,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { toast } from "@/components/ui/use-toast";
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { createProposal } from '../request';
 import { IntendType } from './const';
-import useSWR from 'swr';
+import useSWRMutation from 'swr/mutation';
+import { useAccount } from 'india-hd-utils';
+import { toast } from 'react-hot-toast';
+import { useSWRConfig } from "swr"
+
 
 // Define the schema using Zod
 const FormSchema = z.object({
@@ -39,25 +43,34 @@ const FormSchema = z.object({
 // Define the types for the form
 type FormValues = z.infer<typeof FormSchema>;
 
-const CreateVote = ({className}: {className?: string}) => {
+const CreateVote = ({ className }: { className?: string }) => {
+  const { mutate } = useSWRConfig()
   const [voteType, setVoteType] = useState<string>('');
+  const { wallet } = useAccount()
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
+    defaultValues: {
+      intend: '1',
+      tokenAmount: undefined,
+      title: '',
+      reason: '',
+      votedAddress: '',
+    },
   });
 
-  // const {data,} = useSWR('createProposal', () => createProposal('1'),);
+
+  const { trigger, isMutating } = useSWRMutation('createProposal', (_, data: any) => createProposal(data.arg));
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    await createProposal(data)
-    form.reset();
-    toast({
-      title: "Vote Created",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
+    try {
+      // @ts-ignore
+      await trigger(data)
+      await mutate('/api/proposal')
+      toast.success('Successfully Create Vote')
+      form.reset();
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to Create Vote')
+    }
   };
 
   return (
@@ -78,11 +91,9 @@ const CreateVote = ({className}: {className?: string}) => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Vote Type</FormLabel>
-                <Select onValueChange={(value) => {
-                  setVoteType(value);
-                  field.onChange(value);
-                }}
-                  defaultValue={field.value}>
+                <Select
+                  onValueChange={field.onChange} value={field.value}
+                >
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select your vote type" />
@@ -160,7 +171,10 @@ const CreateVote = ({className}: {className?: string}) => {
             )}
           />
 
-          <Button type="submit">Create Vote</Button>
+          <Button type="submit" disabled={!wallet || isMutating}>
+            {isMutating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {wallet ? 'Create Vote' : 'Please connect your wallet first'}
+          </Button>
         </form>
       </Form>
     </div>

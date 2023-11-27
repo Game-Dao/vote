@@ -22,5 +22,9 @@ export const reverseIntendType = Object.keys(IntendType).reduce((acc, key) => {
 
 export const status2Label:Record<string,string> = {
   '1': 'Voting',
-  '2': 'Compolete',
+  '2': 'Pass',
+  '3': 'Reject',
+  '4': 'Revoke',
 }
+
+export const intervalTime = 20000

@@ -6,6 +6,7 @@
 import CreateVote from "./(Sections)/CreateVote"
 import Proposals from "./(Sections)/Proposals"
 import Top5Holder from "./(Sections)/Top5Holder"
+import { intervalTime } from "./(Sections)/const"
 import { getTop5Holder } from "./request"
 import { useSWRWithToken } from "@/lib/useSWRWithToken"
 
@@ -20,7 +21,7 @@ const getSortNftData = (data: { [k: string]: number }) => {
 }
 
 export default function Component() {
-  const { data: nftTop5 } = useSWRWithToken('/api/nft/top5', getTop5Holder, { refreshInterval: 2000 })
+  const { data: nftTop5 } = useSWRWithToken('/api/nft/top5', getTop5Holder, { refreshInterval: intervalTime })
 
   const sortedDataForTop5 = getSortNftData(nftTop5)
 

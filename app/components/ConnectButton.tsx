@@ -11,6 +11,8 @@ import {
   MenubarTrigger,
 } from "@/components/ui/menubar"
 import toast from 'react-hot-toast'
+import { ShieldCheck } from 'lucide-react'
+import useTop5NFTOwnerStatus from '@/lib/useTop5NFTOwnerStatus'
 
 
 export const JWT_TOKEN_KEY = 'jwtToken'
@@ -19,6 +21,8 @@ export const NODE_ID_NAME = 'networkId'
 
 function ConnectButton() {
   const { wallet, logout } = useAccount()
+  const isInTop5 = useTop5NFTOwnerStatus()
+
   if (!wallet) {
     return (
       <Button onClick={connectWalletForURL} className="text-[#bd1e59] dark:text-white border-[#bd1e59] dark:border-white" variant="ghost">
@@ -26,11 +30,16 @@ function ConnectButton() {
       </Button>
     )
   }
+  
   return <>
     <Menubar>
       <MenubarMenu>
-        <MenubarTrigger>{wallet.address.slice(0, 6)}...{wallet.address.slice(-4)}</MenubarTrigger>
+        <MenubarTrigger>{isInTop5 && <ShieldCheck className='mr-2 text-green-400' />} {wallet.address.slice(0, 6)}...{wallet.address.slice(-4)}</MenubarTrigger>
         <MenubarContent>
+          <div className={`p-2 text-orange-400 font-semibold ${isInTop5 ? 'animate-blink' : ''}`}>
+            {isInTop5 && 'The top5 NFT owner'}
+          </div>
+          <MenubarSeparator />
           <MenubarItem onClick={() => window.open(process.env.NEXT_PUBLIC_WALLET_URL)}>Go To Wallet</MenubarItem>
           <MenubarSeparator />
           <MenubarItem onClick={async () => {

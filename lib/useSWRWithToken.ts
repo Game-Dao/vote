@@ -1,3 +1,4 @@
+'use client'
 import { useAccount } from 'india-hd-utils';
 import { useEffect, useState } from 'react';
 import useSWR, { Fetcher } from 'swr';
@@ -5,7 +6,7 @@ import useSWR, { Fetcher } from 'swr';
 // Custom hook that wraps useSWR
 export function useSWRWithToken<Data, Error>(key: any, fetcher: Fetcher<Data, string>, options?: any) {
   const { wallet } = useAccount()
-  const token = localStorage.getItem('token');
+  const token = typeof window !== 'undefined' && localStorage.getItem('token');
   const [swrKey, setSwrKey] = useState(token ? key : null);
 
   useEffect(() => {
