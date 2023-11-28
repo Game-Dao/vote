@@ -11,7 +11,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 const defaultTabSelection: ProposalType = '1'
 function Proposals() {
   const [currentTab, setCurrentTab] = useState<ProposalType>(defaultTabSelection); // State to track current tab
-  const { data: proposals } = useSWRWithToken('/api/proposal', () => getProposal(currentTab), { refreshInterval: intervalTime });
+  const { data: proposals } = useSWRWithToken(['/api/proposal', currentTab], () => getProposal(currentTab), { refreshInterval: intervalTime });
   const { wallet } = useAccount()
 
   if (!wallet) {
@@ -33,9 +33,10 @@ function Proposals() {
       </Tabs>
       <ScrollArea className="h-[790px] rounded-md border p-4">
         <div className="grid grid-cols-2 gap-4">
-        {proposals?.map(item => (
+        {proposals?.map((item,idx: number) => (
           <ProposalItem
             key={item.voteId}
+            id={String(item.voteId) + idx}
             title={item.title}
             description={item.reason}
             type={reverseIntendType[item.intend]}

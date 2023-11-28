@@ -58,8 +58,12 @@ const CreateVote = ({ className }: { className?: string }) => {
     },
   });
 
+  const watchedIntend = form.watch('intend');
 
-  const { trigger, isMutating } = useSWRMutation('createProposal', (_, data: any) => createProposal(data.arg));
+  const { trigger, isMutating } = useSWRMutation('createProposal', async (_, data: any) => {
+    const tokenAmount = String(data.arg.intend) === '3' ? data.arg.tokenAmount + '0'.repeat(18) : undefined
+    await createProposal({...data.arg,tokenAmount})
+  });
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
@@ -110,7 +114,7 @@ const CreateVote = ({ className }: { className?: string }) => {
           />
 
           {/* Conditional Token Amount Field */}
-          {voteType === IntendType.WITHDRAW.value && (
+          {watchedIntend.toString() === IntendType.WITHDRAW.value && (
             <FormField
               control={form.control}
               name="tokenAmount"

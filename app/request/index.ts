@@ -39,7 +39,7 @@ export const getProposal = async (type: ProposalType) => {
 }
 
 export const vote = async (voteId: string ,isAgree: boolean,reason: string) => {
-  const { data } = await request<any>('/wallet/vote/vote', 'POST', {agree: isAgree, reason, voteId});
+  const { data } = await request<any>('/vote/vote', 'POST', {agree: isAgree, reason, voteId});
   return data;
 }
 
@@ -50,6 +50,16 @@ export const createProposal = async(body: any) => {
 
 export const getTop5Holder = async() => {
   const {data} = await request<any>('/vote/top5NftHolder', 'GET');
+  return data;
+}
+
+interface RevokeBody {
+  agree: boolean;
+  reason: string;
+  voteId: number;
+}
+export const revokeVote = async(body: RevokeBody) => {
+  const {data} = await request<any>('/vote/cancelVote', 'POST', body);
   return data;
 }
 
