@@ -16,6 +16,9 @@ module.exports = {
       },
     },
     extend: {
+      screens: {
+        'custom-lg': '1500px',
+      },
       keyframes: {
         blink: {
           '0%, 100%': { opacity: '1' },
