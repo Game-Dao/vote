@@ -5,6 +5,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { Loader2 } from "lucide-react"
 import * as z from "zod";
 
+
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -29,15 +30,21 @@ import useSWRMutation from 'swr/mutation';
 import { useAccount } from 'india-hd-utils';
 import { toast } from 'react-hot-toast';
 import { useSWRConfig } from "swr"
+import useVoteTab from '../hooks/useVoteTab';
+import { isAddress } from 'ethers'
+
+const isValidBlockchainAddress = (address: string) => {
+  return isAddress(address)
+};
 
 
 // Define the schema using Zod
 const FormSchema = z.object({
-  intend: z.string(),
+  intend: z.string().min(1, 'Vote type is required'),
   tokenAmount: z.string().min(0, 'Token amount must be greater than or equal to 0').optional(),
   title: z.string().min(1, 'Vote title is required'),
   reason: z.string().min(1, 'Vote content is required'),
-  votedAddress: z.string().min(1, 'Vote address is required'),
+  votedAddress: z.string().refine(isValidBlockchainAddress, {message:'require a valid address'}),
 });
 
 // Define the types for the form
@@ -45,8 +52,8 @@ type FormValues = z.infer<typeof FormSchema>;
 
 const CreateVote = ({ className }: { className?: string }) => {
   const { mutate } = useSWRConfig()
-  const [voteType, setVoteType] = useState<string>('');
   const { wallet } = useAccount()
+  const {tab} = useVoteTab()
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -69,7 +76,7 @@ const CreateVote = ({ className }: { className?: string }) => {
     try {
       // @ts-ignore
       await trigger(data)
-      await mutate('/api/proposal')
+      await mutate(['/api/proposal',tab])
       toast.success('Successfully Create Vote')
       form.reset();
     } catch (error: any) {
@@ -96,7 +103,7 @@ const CreateVote = ({ className }: { className?: string }) => {
               <FormItem>
                 <FormLabel>Vote Type</FormLabel>
                 <Select
-                  onValueChange={field.onChange} value={field.value}
+                  onValueChange={field.onChange} defaultValue={undefined} value={field.value}
                 >
                   <FormControl>
                     <SelectTrigger>
@@ -104,17 +111,18 @@ const CreateVote = ({ className }: { className?: string }) => {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value={IntendType.INTEGRATE_GAME.value}>{IntendType.INTEGRATE_GAME.label}</SelectItem>
-                    <SelectItem value={IntendType.REMOVE_GAME.value}>{IntendType.REMOVE_GAME.label}</SelectItem>
-                    <SelectItem value={IntendType.WITHDRAW.value}>{IntendType.WITHDRAW.label}</SelectItem>
+                    <SelectItem value="1">{IntendType.INTEGRATE_GAME.label}</SelectItem>
+                    <SelectItem value="2">{IntendType.REMOVE_GAME.label}</SelectItem>
+                    <SelectItem value="3">{IntendType.WITHDRAW.label}</SelectItem>
                   </SelectContent>
                 </Select>
+                <FormMessage />
               </FormItem>
             )}
           />
 
           {/* Conditional Token Amount Field */}
-          {watchedIntend.toString() === IntendType.WITHDRAW.value && (
+          {watchedIntend && watchedIntend.toString() === IntendType.WITHDRAW.value && (
             <FormField
               control={form.control}
               name="tokenAmount"

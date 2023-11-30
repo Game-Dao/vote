@@ -7,13 +7,12 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useSWRWithToken } from '@/lib/useSWRWithToken'
 import { useAccount } from 'india-hd-utils'
 import { ScrollArea } from "@/components/ui/scroll-area"
+import useVoteTab from '../hooks/useVoteTab'
 
-const defaultTabSelection: ProposalType = '1'
 function Proposals() {
-  const [currentTab, setCurrentTab] = useState<ProposalType>(defaultTabSelection); // State to track current tab
-  const { data: proposals } = useSWRWithToken(['/api/proposal', currentTab], () => getProposal(currentTab), { refreshInterval: intervalTime });
   const { wallet } = useAccount()
-
+  const { handleTabChange, tab } = useVoteTab()
+  const { data: proposals } = useSWRWithToken(['/api/proposal', tab], () => getProposal(tab as ProposalType || '1'), { refreshInterval: intervalTime });
   if (!wallet) {
     return (
       <div className="flex flex-col  justify-center h-[300px]">
@@ -24,7 +23,7 @@ function Proposals() {
 
   return (
     <div className='space-y-4'>
-      <Tabs defaultValue={currentTab} className="w-[400px]" onValueChange={(v: string) => setCurrentTab(v as ProposalType)}>
+      <Tabs defaultValue={tab || '1'} className="w-[400px]" onValueChange={(v: string) => {handleTabChange(v)}}>
         <TabsList>
           <TabsTrigger value="1">All</TabsTrigger>
           <TabsTrigger value="2">My Votes</TabsTrigger>
