@@ -12,7 +12,7 @@ import useVoteTab from '../hooks/useVoteTab'
 function Proposals() {
   const { wallet } = useAccount()
   const { handleTabChange, tab } = useVoteTab()
-  const { data: proposals } = useSWRWithToken(['/api/proposal', tab], () => getProposal(tab as ProposalType || '1'), { refreshInterval: intervalTime });
+  const { data: proposals } = useSWRWithToken(['/api/proposal', tab], () => getProposal(tab as ProposalType || '1',wallet?.address), { refreshInterval: intervalTime });
   if (!wallet) {
     return (
       <div className="flex flex-col  justify-center h-[300px]">
@@ -34,13 +34,14 @@ function Proposals() {
         <div className="grid grid-cols-1 gap-4 custom-lg:grid-cols-2">
         {proposals?.map((item,idx: number) => (
           <ProposalItem
-            key={item.voteId}
-            id={String(item.voteId) + idx}
+            id={item.voteId}
+            key={String(item.voteId) + idx}
             title={item.title}
             description={item.reason}
             type={reverseIntendType[item.intend]}
             status={status2Label[item.status]}
             initiator={item.voteAddress}
+            voteAddress={item.voteAddress}
           />
         ))}
         </div>

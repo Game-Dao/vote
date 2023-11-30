@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  basePath: '/dao-vote',
+  // basePath: '/dao-vote',
   output: "export"
 }
 

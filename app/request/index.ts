@@ -33,12 +33,12 @@ interface Proposal {
 }
 
 export type ProposalType = '1' | '2' |'3';
-export const getProposal = async (type: ProposalType) => {
-  const { data } = await request<any>('/vote/voteList', 'POST', {type});
+export const getProposal = async (type: ProposalType,address: string) => {
+  const { data } = await request<any>('/vote/voteList', 'POST', {type, address});
   return data as Proposal[];
 }
 
-export const vote = async (voteId: string ,isAgree: boolean,reason: string) => {
+export const vote = async (voteId: string | number ,isAgree: boolean,reason: string) => {
   const { data } = await request<any>('/vote/vote', 'POST', {agree: isAgree, reason, voteId});
   return data;
 }

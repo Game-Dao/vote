@@ -9,11 +9,12 @@ import { revokeVote, vote } from "../request";
 
 interface ProposalItemProps {
   title: string;
-  id: string;
+  id: string | number;
   description: string;
   status: string;
   type: string;
   initiator: string;
+  voteAddress: string;
   onClick?: () => void;
 }
 
@@ -22,7 +23,7 @@ interface VoteParams {
   reason: string;
 }
 
-export default function ProposalItem({ title, description, initiator, status, type, id }: ProposalItemProps) {
+export default function ProposalItem({ title, description, initiator, status, type, id, voteAddress }: ProposalItemProps) {
   const { isInTop5 } = useTop5NFTOwnerStatus();
   const isHiddenBtn = !isInTop5 || String(status) !== status2Label['1'];
   const { wallet } = useAccount();
@@ -56,6 +57,10 @@ export default function ProposalItem({ title, description, initiator, status, ty
         <div className='flex gap-2'>
           <label>Initiator:</label>
           <CardDescription className="break-words truncate">{initiator}</CardDescription>
+        </div>
+        <div className='flex gap-2'>
+          <label>Address:</label>
+          <CardDescription className="break-words truncate">{voteAddress}</CardDescription>
         </div>
       </CardContent>
       <CardFooter className="flex justify-between space-x-2">
