@@ -21,7 +21,8 @@ export const NODE_ID_NAME = 'networkId'
 
 function ConnectButton() {
   const { wallet, logout } = useAccount()
-  const isInTop5 = useTop5NFTOwnerStatus()
+  const { isInTop5 } = useTop5NFTOwnerStatus()
+  console.log('isInTop5', isInTop5)
 
   if (!wallet) {
     return (
@@ -30,15 +31,16 @@ function ConnectButton() {
       </Button>
     )
   }
-  
+
   return <>
     <Menubar>
       <MenubarMenu>
         <MenubarTrigger>{isInTop5 && <ShieldCheck className='mr-2 text-green-400' />} {wallet.address.slice(0, 6)}...{wallet.address.slice(-4)}</MenubarTrigger>
         <MenubarContent>
-          <div className={`p-2 text-orange-400 font-semibold ${isInTop5 ? 'animate-blink' : ''}`}>
-            {isInTop5 && 'The top5 NFT owner'}
-          </div>
+          {isInTop5 &&
+            <div className={`p-2 text-orange-400 font-semibold ${isInTop5 ? 'animate-blink' : ''}`}>
+              The top5 NFT owner
+            </div>}
           <MenubarSeparator />
           <MenubarItem onClick={() => window.open(process.env.NEXT_PUBLIC_WALLET_URL)}>Go To Wallet</MenubarItem>
           <MenubarSeparator />
