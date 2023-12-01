@@ -58,16 +58,14 @@ export default function ProposalItem({ onVoteSuccess, title, description, initia
     const _color = voteHistory[wallet.address] && status2Info[voteHistory[wallet.address]]?.color || ''
     if (_status) {
       return (
-        <CardFooter className="flex justify-between space-x-2">
-          <div className='flex gap-2 items-center'>
-            <label>My Vote:</label>
-            <CardDescription style={{ color: _color, fontWeight: 'bold' }}>{_status}</CardDescription>
-          </div>
-        </CardFooter>
+        <div className='flex gap-2 items-center'>
+          <label>My Vote:</label>
+          <CardDescription style={{ color: _color, fontWeight: 'bold' }}>{_status}</CardDescription>
+        </div>
       )
     }
     return (
-      <CardFooter className="flex justify-between space-x-2">
+      <>
         {!isHiddenBtn && (
           <div className="flex items-center space-x-3">
             <AlertDialogComponent isLoading={isMutatingForVote} title='Approve Vote' onConfirm={async () => {
@@ -90,31 +88,16 @@ export default function ProposalItem({ onVoteSuccess, title, description, initia
                 toast.success('Successfully Reject')
                 onVoteSuccess()
               } catch (error: any) {
-                toast.error(error?.message as string || 'Approve Failed')
+                toast.error(error?.message as string || 'Reject Failed')
               }
-            }} description="Please confirm you want to approve, after approve, can not change" >
+            }} description="Please confirm you want to reject, after reject, can not change" >
               <Button size='sm' variant="destructive">
                 Reject
               </Button>
             </AlertDialogComponent>
-
-            {initiator === wallet.address && <AlertDialogComponent isLoading={isMutatingForRevoke} title='Revoke Vote' onConfirm={async () => {
-              try {
-                await startRevoke()
-                toast.success('Successfully Revoked')
-                onVoteSuccess()
-              } catch (error: any) {
-                toast.error(error?.message as string || 'Approve Failed')
-              }
-            }} description="Please confirm you want to approve, after approve, can not change" >
-              <Button size='sm' variant="secondary">
-                Revoke
-              </Button>
-            </AlertDialogComponent>}
-
           </div>
         )}
-      </CardFooter>
+      </>
     )
   }
 
@@ -147,9 +130,9 @@ export default function ProposalItem({ onVoteSuccess, title, description, initia
                     return (
                       <div key={address}>
                         <span className='text-blue-700 underline cursor-pointer'>
-                          {`${address.slice(0,8)}...${address.slice(-6)}`}
+                          {`${address.slice(0, 8)}...${address.slice(-6)}`}
                         </span>
-                        <span className='ml-2 font-semibold' style={{color: status2Info[voteHistory[address]]?.color}}>{status2Info[voteHistory[address]]?.text}</span>
+                        <span className='ml-2 font-semibold' style={{ color: status2Info[voteHistory[address]]?.color }}>{status2Info[voteHistory[address]]?.text}</span>
                       </div>
                     )
                   })
@@ -171,8 +154,23 @@ export default function ProposalItem({ onVoteSuccess, title, description, initia
           <CardDescription className="break-words truncate">{voteAddress}</CardDescription>
         </div>
       </CardContent>
-      {CardFooterRender(voteHistory)}
-
+      <CardFooter className="flex items-center space-x-4">
+        {CardFooterRender(voteHistory)}
+        {initiator === wallet.address && status !== 'Revoke' &&
+          <AlertDialogComponent isLoading={isMutatingForRevoke} title='Revoke Vote' onConfirm={async () => {
+            try {
+              await startRevoke()
+              toast.success('Successfully Revoked')
+              onVoteSuccess()
+            } catch (error: any) {
+              toast.error(error?.message as string || 'Revoked Failed')
+            }
+          }} description="Please confirm you want to revoked, after revoked, can not change" >
+            <Button size='sm' variant="secondary">
+              Revoke
+            </Button>
+          </AlertDialogComponent>}
+      </CardFooter>
     </Card>
   );
 }
