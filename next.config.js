@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  basePath: '/vote',
+  // basePath: '/vote',
   output: "export"
 }
 
