@@ -8,7 +8,6 @@ import { useSWRWithToken } from '@/lib/useSWRWithToken'
 import { useAccount } from 'india-hd-utils'
 import { ScrollArea } from "@/components/ui/scroll-area"
 import useVoteTab from '../hooks/useVoteTab'
-import Link from 'next/link'
 
 function Proposals() {
   const { wallet } = useAccount()
@@ -26,13 +25,9 @@ function Proposals() {
     <div className='space-y-4'>
       <Tabs defaultValue={tab || '1'} className="w-[400px]" onValueChange={(v: string) => { handleTabChange(v) }}>
         <TabsList>
-          <TabsTrigger value="1"><Link href="/?tab=1">All</Link></TabsTrigger>
-          <TabsTrigger value="2">
-            <Link href="/?tab=2">My Votes</Link>
-          </TabsTrigger>
-          <TabsTrigger value="3">
-            <Link href="/?tab=3">My Initiatives</Link>
-          </TabsTrigger>
+          <TabsTrigger value="1">All</TabsTrigger>
+          <TabsTrigger value="2">My Votes</TabsTrigger>
+          <TabsTrigger value="3">My Initiatives</TabsTrigger>
         </TabsList>
       </Tabs>
       <ScrollArea className="h-[790px] rounded-md border p-4">
