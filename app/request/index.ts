@@ -30,26 +30,27 @@ interface Proposal {
   voteAddress: string;
   voteId: number;
   votedAddress: string;
+  voteHistory: Record<string, number>;
 }
 
-export type ProposalType = '1' | '2' |'3';
-export const getProposal = async (type: ProposalType,address: string) => {
-  const { data } = await request<any>('/vote/voteList', 'POST', {type, address});
+export type ProposalType = '1' | '2' | '3';
+export const getProposal = async (type: ProposalType, address: string) => {
+  const { data } = await request<any>('/vote/voteList', 'POST', { type, address });
   return data as Proposal[];
 }
 
-export const vote = async (voteId: string | number ,isAgree: boolean,reason: string) => {
-  const { data } = await request<any>('/vote/vote', 'POST', {agree: isAgree, reason, voteId});
+export const vote = async (voteId: string | number, isAgree: boolean, reason: string) => {
+  const { data } = await request<any>('/vote/vote', 'POST', { agree: isAgree, reason, voteId });
   return data;
 }
 
-export const createProposal = async(body: any) => {
-  const {data} = await request<any>('/vote/createVote', 'POST', {...body});
+export const createProposal = async (body: any) => {
+  const { data } = await request<any>('/vote/createVote', 'POST', { ...body });
   return data;
 }
 
-export const getTop5Holder = async() => {
-  const {data} = await request<any>('/vote/top5NftHolder', 'GET');
+export const getTop5Holder = async () => {
+  const { data } = await request<any>('/vote/top5NftHolder', 'GET');
   return data;
 }
 
@@ -58,8 +59,8 @@ interface RevokeBody {
   reason: string;
   voteId: number;
 }
-export const revokeVote = async(body: RevokeBody) => {
-  const {data} = await request<any>('/vote/cancelVote', 'POST', body);
+export const revokeVote = async (body: RevokeBody) => {
+  const { data } = await request<any>('/vote/cancelVote', 'POST', body);
   return data;
 }
 

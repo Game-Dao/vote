@@ -12,7 +12,7 @@ import useVoteTab from '../hooks/useVoteTab'
 function Proposals() {
   const { wallet } = useAccount()
   const { handleTabChange, tab } = useVoteTab()
-  const { data: proposals } = useSWRWithToken(['/api/proposal', tab], () => getProposal(tab as ProposalType || '1',wallet?.address), { refreshInterval: intervalTime });
+  const { data: proposals, mutate } = useSWRWithToken(['/api/proposal', tab], () => getProposal(tab as ProposalType || '1', wallet?.address), { refreshInterval: intervalTime });
   if (!wallet) {
     return (
       <div className="flex flex-col  justify-center h-[300px]">
@@ -23,7 +23,7 @@ function Proposals() {
 
   return (
     <div className='space-y-4'>
-      <Tabs defaultValue={tab || '1'} className="w-[400px]" onValueChange={(v: string) => {handleTabChange(v)}}>
+      <Tabs defaultValue={tab || '1'} className="w-[400px]" onValueChange={(v: string) => { handleTabChange(v) }}>
         <TabsList>
           <TabsTrigger value="1">All</TabsTrigger>
           <TabsTrigger value="2">My Votes</TabsTrigger>
@@ -32,18 +32,23 @@ function Proposals() {
       </Tabs>
       <ScrollArea className="h-[790px] rounded-md border p-4">
         <div className="grid grid-cols-1 gap-4 custom-lg:grid-cols-2">
-        {proposals?.map((item,idx: number) => (
-          <ProposalItem
-            id={item.voteId}
-            key={String(item.voteId) + idx}
-            title={item.title}
-            description={item.reason}
-            type={reverseIntendType[item.intend]}
-            status={status2Label[item.status]}
-            initiator={item.voteAddress}
-            voteAddress={item.voteAddress}
-          />
-        ))}
+          {proposals?.map((item, idx: number) => (
+            <ProposalItem
+              id={item.voteId}
+              key={String(item.voteId) + idx}
+              title={item.title}
+              description={item.reason}
+              type={reverseIntendType[item.intend]}
+              status={status2Label[item.status]}
+              initiator={item.voteAddress}
+              voteAddress={item.voteAddress}
+              voteHistory={item.voteHistory}
+              onVoteSuccess={() => {
+                mutate()
+              }
+              }
+            />
+          ))}
         </div>
       </ScrollArea>
     </div>
