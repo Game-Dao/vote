@@ -12,8 +12,7 @@ export default function Top5Holder({data}: {data:{count: number,address: string}
         The following are the top 5 NFT holders who are eligible to vote and create new votes.
       </p>
       <div className="container flex justify-center items-center gap-4 lg:gap-10 px-0">
-        <div className="flex w-full justify-start items-center gap-6">
-          {/* 持有者 1 到 5 的循环 */}
+        <div className="flex flex-wrap w-full justify-start items-center gap-6">
           {data.map((holder,idx) => (
             <div key={holder.address} className="flex gap-4 items-center">
               <Avatar className="w-10 h-10 border">
