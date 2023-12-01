@@ -24,6 +24,32 @@ export const getReverseIntendType = (intend: string) => {
   }
 }
 
+export function multiplyByTenPowEighteen(number: number) {
+  let [integer, fraction] = number.toString().split('.');
+  if (fraction) {
+    const requiredZeros = 18 - fraction.length;
+    if (requiredZeros > 0) {
+      return integer + fraction + '0'.repeat(requiredZeros);
+    } else {
+      return integer + fraction.slice(0, 18) + '.' + fraction.slice(18);
+    }
+  } else {
+    return integer + '0'.repeat(18);
+  }
+}
+
+export function divideByTenPowEighteen(number: number) {
+  let strNum = number.toString();
+  let len = strNum.length;
+
+  if (len <= 18) {
+    return '0.' + '0'.repeat(18 - len) + strNum;
+  } else {
+    return strNum.slice(0, len - 18) + '.' + strNum.slice(len - 18);
+  }
+}
+
+
 export function divideHugeNumberBy1e18(numberStr: string): number | string {
   // 检查是否为有效字符串
   if (!numberStr || isNaN(Number(numberStr))) {

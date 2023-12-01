@@ -2,7 +2,7 @@ import React from 'react';
 import { CardTitle, CardHeader, CardDescription, CardContent, CardFooter, Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import useTop5NFTOwnerStatus from "@/lib/useTop5NFTOwnerStatus";
-import { divideHugeNumberBy1e18, getReverseIntendType, status2Label } from "./const";
+import { divideByTenPowEighteen, divideHugeNumberBy1e18, getReverseIntendType, status2Label } from "./const";
 import { useAccount } from "india-hd-utils";
 import useSWRMutation from "swr/mutation";
 import { revokeVote, vote } from "../request";
@@ -146,9 +146,10 @@ export default function ProposalItem({ onVoteSuccess, title, description, initia
           <label>Type:</label>
           <CardDescription>{getReverseIntendType(intend)}</CardDescription>
         </div>
-        {intend === 'Withdraw' && <div className='flex gap-2'>
+        {Number(intend) >=3 && <div className='flex gap-2'>
           <label>Amount:</label>
-          <CardDescription>{divideHugeNumberBy1e18(intend)}</CardDescription>
+          {/* @ts-ignore */}
+          <CardDescription>{divideByTenPowEighteen(intend)}</CardDescription>
         </div>}
         <div className='flex gap-2'>
           <label>Initiator:</label>

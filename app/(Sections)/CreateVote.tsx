@@ -25,7 +25,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { createProposal } from '../request';
-import { IntendType } from './const';
+import { IntendType, multiplyByTenPowEighteen } from './const';
 import useSWRMutation from 'swr/mutation';
 import { useAccount } from 'india-hd-utils';
 import { toast } from 'react-hot-toast';
@@ -68,7 +68,18 @@ const CreateVote = ({ className }: { className?: string }) => {
   const watchedIntend = form.watch('intend');
 
   const { trigger, isMutating } = useSWRMutation('createProposal', async (_, data: any) => {
-    const tokenAmount = String(data.arg.intend) === '3' ? data.arg.tokenAmount + '0'.repeat(18) : undefined
+    function convertTokenAmount(tokenAmount: string, zerosToAdd: number) {
+      // 将字符串转换为数字，然后乘以10的zerosToAdd次方
+      let number = Number(tokenAmount);
+      number *= Math.pow(10, zerosToAdd);
+    
+      // 将结果转换回字符串
+      return number.toString();
+    }
+    
+    const tokenAmount = String(data.arg.intend) === '3' 
+        ? multiplyByTenPowEighteen(data.arg.tokenAmount)
+        : undefined;
     await createProposal({...data.arg,intend: tokenAmount ? tokenAmount : data.arg.intend, tokenAmount: undefined})
   });
 
