@@ -69,7 +69,7 @@ const CreateVote = ({ className }: { className?: string }) => {
 
   const { trigger, isMutating } = useSWRMutation('createProposal', async (_, data: any) => {
     const tokenAmount = String(data.arg.intend) === '3' ? data.arg.tokenAmount + '0'.repeat(18) : undefined
-    await createProposal({...data.arg,tokenAmount})
+    await createProposal({...data.arg,intend: tokenAmount ? tokenAmount : data.arg.intend, tokenAmount: undefined})
   });
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {

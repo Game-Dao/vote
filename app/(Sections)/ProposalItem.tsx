@@ -2,7 +2,7 @@ import React from 'react';
 import { CardTitle, CardHeader, CardDescription, CardContent, CardFooter, Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import useTop5NFTOwnerStatus from "@/lib/useTop5NFTOwnerStatus";
-import { status2Label } from "./const";
+import { divideHugeNumberBy1e18, getReverseIntendType, status2Label } from "./const";
 import { useAccount } from "india-hd-utils";
 import useSWRMutation from "swr/mutation";
 import { revokeVote, vote } from "../request";
@@ -20,12 +20,13 @@ interface ProposalItemProps {
   id: string | number;
   description: string;
   status: string;
-  type: string;
+  // type: string;
   initiator: string;
   voteAddress: string;
   onClick?: () => void;
   voteHistory: Record<string, number>
   onVoteSuccess: () => void;
+  intend: string
 }
 
 interface VoteParams {
@@ -39,7 +40,7 @@ const status2Info: { [k: number]: { text: string, color: string } } = {
   3: { text: 'Revoke', color: 'gray' },
 }
 
-export default function ProposalItem({ onVoteSuccess, title, description, initiator, status, type, id, voteAddress, voteHistory }: ProposalItemProps) {
+export default function ProposalItem({ onVoteSuccess, title, description, initiator, status, intend, id, voteAddress, voteHistory }: ProposalItemProps) {
   const { isInTop5 } = useTop5NFTOwnerStatus();
   const isHiddenBtn = !isInTop5 || String(status) !== status2Label['1'];
   const { wallet } = useAccount();
@@ -143,8 +144,12 @@ export default function ProposalItem({ onVoteSuccess, title, description, initia
         </div>
         <div className='flex gap-2'>
           <label>Type:</label>
-          <CardDescription>{type}</CardDescription>
+          <CardDescription>{getReverseIntendType(intend)}</CardDescription>
         </div>
+        {intend === 'Withdraw' && <div className='flex gap-2'>
+          <label>Amount:</label>
+          <CardDescription>{divideHugeNumberBy1e18(intend)}</CardDescription>
+        </div>}
         <div className='flex gap-2'>
           <label>Initiator:</label>
           <CardDescription className="break-words truncate">{initiator}</CardDescription>

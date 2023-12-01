@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import { ProposalType, getProposal } from '../request'
 import ProposalItem from './ProposalItem'
-import { intervalTime, reverseIntendType, status2Label } from './const'
+import { intervalTime, getReverseIntendType, status2Label } from './const'
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useSWRWithToken } from '@/lib/useSWRWithToken'
 import { useAccount } from 'india-hd-utils'
@@ -38,7 +38,7 @@ function Proposals() {
               key={String(item.voteId) + idx}
               title={item.title}
               description={item.reason}
-              type={reverseIntendType[item.intend]}
+              intend={String(item.intend)}
               status={status2Label[item.status]}
               initiator={item.voteAddress}
               voteAddress={item.voteAddress}
