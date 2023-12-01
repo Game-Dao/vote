@@ -12,7 +12,7 @@ function useVoteTab() {
       // 用原生的方法去set tab
       const searchParams = new URLSearchParams(window.location.search)
       searchParams.set('tab', '1')
-      router.push(`${pathName}?${searchParams.toString()}`)
+      router.replace(`${pathName}?${searchParams.toString()}`)
     }
   },[])
 
@@ -20,7 +20,7 @@ function useVoteTab() {
     // 用原生的方法去set tab
     const searchParams = new URLSearchParams(window.location.search)
     searchParams.set('tab', tab)
-    router.push(`${pathName}?${searchParams.toString()}`)
+    router.replace(`${pathName}?${searchParams.toString()}`)
   }
   return {
     handleTabChange,
