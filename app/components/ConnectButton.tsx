@@ -26,6 +26,7 @@ function ConnectButton() {
 
   if (!wallet) {
     return (
+      // @ts-ignore
       <Button onClick={() => connectWallet()} className="text-[#bd1e59] dark:text-white border-[#bd1e59] dark:border-white" variant="ghost">
         Connect Wallet
       </Button>

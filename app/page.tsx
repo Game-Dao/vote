@@ -12,7 +12,7 @@ import { useSWRWithToken } from "@/lib/useSWRWithToken"
 
 const getSortNftData = (data: { [k: string]: number }) => {
   if (!data) return []
-  return Object.keys(data).map(key => {
+  return Object?.keys(data).map(key => {
     return {
       address: key,
       count: data[key]

@@ -127,7 +127,7 @@ export default function ProposalItem({ onVoteSuccess, title, description, initia
               </TooltipTrigger>
               <TooltipContent>
                 {
-                  Object.keys(voteHistory).map((address: string) => {
+                  Object?.keys(voteHistory || []).map((address: string) => {
                     return (
                       <div key={address}>
                         <span className='text-blue-700 underline cursor-pointer'>

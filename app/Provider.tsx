@@ -11,6 +11,8 @@ function Provider({ children }: { children: React.ReactNode }) {
   console.log(process.env.NEXT_PUBLIC_WALLET_URL!)
   return (
     <AccountProvider
+      customToast={() => {}}
+      iframeURL={process.env.NEXT_PUBLIC_WALLET_URL}
       walletURL={process.env.NEXT_PUBLIC_WALLET_URL!}
       applicationName="vote"
       getWallet={getWallet}
