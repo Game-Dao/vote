@@ -8,8 +8,11 @@ import { Toaster as ShadcnToaster } from "@/components/ui/toaster"
 
 
 function Provider({ children }: { children: React.ReactNode }) {
+  console.log(process.env.NEXT_PUBLIC_WALLET_URL!)
   return (
     <AccountProvider
+      walletURL={process.env.NEXT_PUBLIC_WALLET_URL!}
+      applicationName="vote"
       getWallet={getWallet}
       onLogout={() => {
         localStorage.clear()

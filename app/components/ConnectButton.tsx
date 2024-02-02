@@ -1,7 +1,7 @@
 'use client'
 import { Button } from '@/components/ui/button'
 import React from 'react'
-import { connectWalletForURL, useAccount } from 'india-hd-utils'
+import { useAccount } from 'india-hd-utils'
 import {
   Menubar,
   MenubarContent,
@@ -20,13 +20,13 @@ export const Token = "Token"
 export const NODE_ID_NAME = 'networkId'
 
 function ConnectButton() {
-  const { wallet, logout } = useAccount()
+  const { wallet, logout,connectWallet } = useAccount()
   const { isInTop5 } = useTop5NFTOwnerStatus()
   console.log('isInTop5', isInTop5)
 
   if (!wallet) {
     return (
-      <Button onClick={connectWalletForURL} className="text-[#bd1e59] dark:text-white border-[#bd1e59] dark:border-white" variant="ghost">
+      <Button onClick={() => connectWallet()} className="text-[#bd1e59] dark:text-white border-[#bd1e59] dark:border-white" variant="ghost">
         Connect Wallet
       </Button>
     )
