@@ -102,6 +102,8 @@ export default function ProposalItem({ onVoteSuccess, title, description, initia
     )
   }
 
+  console.log(voteHistory)
+
   return (
     <Card>
       <CardHeader>
@@ -122,7 +124,7 @@ export default function ProposalItem({ onVoteSuccess, title, description, initia
                   <span className='text-blue-700 underline cursor-pointer font-semibold'>
                     {status}
                   </span>
-                  <span className='ml-2 font-semibold'>{Object.keys(voteHistory).length}/5</span>
+                  <span className='ml-2 font-semibold'>{Object.keys(voteHistory || []).length}/5</span>
                 </CardDescription>
               </TooltipTrigger>
               <TooltipContent>

@@ -42,7 +42,7 @@ function Proposals() {
               status={status2Label[item.status]}
               initiator={item.voteAddress}
               voteAddress={item.voteAddress}
-              voteHistory={item.voteHistory}
+              voteHistory={item.voteHistory || []}
               onVoteSuccess={() => {
                 mutate()
               }
